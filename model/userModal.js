@@ -4,7 +4,6 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: true,
     },
     userEmail: {
       type: String,
@@ -12,7 +11,9 @@ const userSchema = new Schema(
     },
     hashedPassword: {
       type: String,
-      require: true,
+    },
+    profilePicture: {
+      type: String,
     },
   },
   { timestamps: true }

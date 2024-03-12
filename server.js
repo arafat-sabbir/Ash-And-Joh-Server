@@ -8,16 +8,21 @@ const baseRoute = require("./app")
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json()); //needed for json data
-//for communicating with frontend
-var corsOptions = {
-  origin: "*",
-};
+app.use(express.json()); // Needed for JSON data
 
-//base routes
+// Middleware to handle preflight requests
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
+// Enable CORS for all routes
+app.use(cors());
+
+// Base routes
 app.use("/api/v1", baseRoute);
-
-app.use(cors(corsOptions));
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -25,7 +30,6 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    // to check connection successful or not
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
