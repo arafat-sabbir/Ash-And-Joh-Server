@@ -8,7 +8,7 @@ const createUser = async (req, res) => {
     const { userEmail, username, password } = req.body;
     const existingUser = await User.findOne({ userEmail });
     if (existingUser) {
-      const accessToken = createTokens(req.body);
+      const accessToken = createTokens(existingUser);
       return res.status(200).json({
         message: "User Already Exist",
         userData: existingUser,
@@ -25,9 +25,11 @@ const createUser = async (req, res) => {
       hashedPassword,
     });
     await newUser.save();
+    const accessToken = createTokens(newUser);
     res.status(200).json({
       userData: newUser,
       message: "User registered successfully",
+      token:accessToken
     });
   } catch (error) {
     console.error("error on userController", error);

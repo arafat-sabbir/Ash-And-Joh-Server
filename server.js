@@ -3,23 +3,19 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
-const baseRoute = require("./app")
+const baseRoute = require("./app");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json()); // Needed for JSON data
 
-// Middleware to handle preflight requests
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
-
-// Enable CORS for all routes
-app.use(cors());
+// Configure CORS middleware
+const corsOptions = {
+  origin: "http://localhost:5173", // Allow requests from this origin
+  credentials: true, // Allow cookies or authorization headers with credentials
+};
+app.use(cors(corsOptions));
 
 // Base routes
 app.use("/api/v1", baseRoute);

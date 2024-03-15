@@ -1,10 +1,8 @@
 const User = require("../../model/userModal");
 
 const updateUser = async (req, res) => {
-  console.log("user router", req.body);
-  const { username, profilePicture } = req.body; // Destructure username and profilePicture from req.body
+  const { username, profilePicture } = req.body; 
   const _id = req.params.id;
-
   try {
     const user = await User.findByIdAndUpdate(
       _id,
