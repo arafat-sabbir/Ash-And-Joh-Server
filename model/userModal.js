@@ -14,7 +14,13 @@ const userSchema = new Schema(
     },
     profilePicture: {
       type: String,
-    }
+    },
+    cartProduct: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts",
+      }
+    ]
   },
   { timestamps: true }
 );
