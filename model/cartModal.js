@@ -13,6 +13,7 @@ const cartSchema = new Schema({
     ref: "users",
   },
   quantity: { type: Number, Required: true },
+  totalPrice: { type: Number, Required: true },
 });
 
 const CartModal = mongoose.model("carts", cartSchema);

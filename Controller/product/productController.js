@@ -38,7 +38,7 @@ const getAllProduct = async (req, res) => {
   try {
     const { limit } = req.query;
     console.log(limit);
-    const result = await ProductModal.find().limit(8);
+    const result = await ProductModal.find();
     res
       .status(200)
       .json({ message: "Product Data Fetched Successfully", data: result });
@@ -47,4 +47,14 @@ const getAllProduct = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, getAllProduct };
+const deleteProduct = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await ProductModal.findByIdAndDelete({ _id: id });
+    res.status(200).json({ message: "Product Deleted SuccessFully" });
+  } catch (err) {
+    res.status(500).json({ message: "Product Deleted UnsuccessFul" });
+  }
+};
+
+module.exports = { addProduct, getAllProduct,deleteProduct };
