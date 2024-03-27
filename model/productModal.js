@@ -6,8 +6,8 @@ const productSchema = new Schema({
   fabrics: { type: String, Required: true },
   price: { type: Number, Required: true },
   availableSize: [{ type: String, Required: true }],
-  gender: { type: String},
-  productImages: [{ type: String }],
+  gender: { type: String },
+  productImages: [{ type: String, Required: true }],
 });
 
 const ProductModal = mongoose.model("products", productSchema);

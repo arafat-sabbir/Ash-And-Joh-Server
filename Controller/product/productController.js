@@ -1,6 +1,33 @@
 const ProductModal = require("../../model/productModal");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage: storage });
 
 const addProduct = async (req, res) => {
+  const sidebarImageCloseResultPromise = new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({ folder: "companyInfo" }, (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      })
+      .end(req.files.sidebarImageClose[0].buffer);
+  });
+
+  const [sidebarImageCloseResult] = await Promise.all([
+    sidebarImageCloseResultPromise,
+  ]);
+
+  console.log(sidebarImageCloseResult, "image");
+
   const {
     productName,
     description,
@@ -10,7 +37,7 @@ const addProduct = async (req, res) => {
     availableSize,
     productImages,
   } = req.body;
-  console.log("Form add Product", req.body);
+
   try {
     const newProduct = ProductModal({
       productName,
@@ -57,4 +84,4 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, getAllProduct,deleteProduct };
+module.exports = { addProduct, getAllProduct, deleteProduct, upload };
